@@ -47,9 +47,9 @@ class ColisLoaded extends ColisState {
       allColis.where((c) => c.isLivre).toList();
 
   int get arrivedNonLivreCount =>
-      allColis.where((c) => c.dateArrivee != null && !c.isLivre).length;
+      allColis.where((c) => c.isArrived).length;
   List<Colis> get arrivedNonLivreColis =>
-      allColis.where((c) => c.dateArrivee != null && !c.isLivre).toList();
+      allColis.where((c) => c.isArrived).toList();
 
   double get totalPoids =>
       allColis.fold(0.0, (sum, c) => sum + c.poids);

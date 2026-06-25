@@ -35,6 +35,11 @@ class Colis extends Equatable {
 
   bool get isNonLivre => statut != ColisStatus.livre;
 
+  bool get isArrived =>
+      dateArrivee != null &&
+      !dateArrivee!.isAfter(DateTime.now()) &&
+      statut == ColisStatus.enTransit;
+
   Colis copyWith({
     String? id,
     String? transportModeId,

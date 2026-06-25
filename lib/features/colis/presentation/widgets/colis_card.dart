@@ -24,7 +24,7 @@ class ColisCard extends StatelessWidget {
     required this.onLongPress,
   });
 
-  bool get _isArrived => colis.dateArrivee != null && colis.statut == ColisStatus.enTransit;
+  bool get _isArrived => colis.isArrived;
 
   Color get _badgeColor {
     if (_isArrived) return AppTheme.statusArrive;
