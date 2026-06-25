@@ -759,8 +759,10 @@ class _ColisListViewState extends State<_ColisListView> {
       ),
       child: Row(
         children: [
-          _buildNotifStat(Icons.scale_rounded, '${weightFormat.format(kg)} KG', color),
-          _buildNotifStat(Icons.view_in_ar_rounded, '${weightFormat.format(m3)} M3', color),
+          if (isAerien)
+            _buildNotifStat(Icons.scale_rounded, '${weightFormat.format(kg)} KG', color),
+          if (!isAerien)
+            _buildNotifStat(Icons.view_in_ar_rounded, '${weightFormat.format(m3)} M3', color),
           _buildNotifStat(Icons.payments_rounded, '${numberFormat.format(fret)} Ar', color),
         ],
       ),
