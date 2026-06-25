@@ -30,7 +30,7 @@ class TextParserResult {
 class TextParserUtil {
   /// Regex patterns for extracting colis information.
   static final RegExp _trackingRegex = RegExp(
-    r'tracking\s*n[°o]?\s*:?\s*(\d+)',
+    r'tracking\s*n[°o]?\s*:?\s*([a-zA-Z0-9]+)',
     caseSensitive: false,
   );
 
