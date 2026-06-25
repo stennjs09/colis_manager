@@ -187,14 +187,20 @@ Le poids de ce colis est: 1.5KG
       );
     });
 
-    test('valide le poids > 0', () async {
-      final invalid = validColis.copyWith(poids: 0);
+    test('valide le poids >= 0', () async {
+      final invalid = validColis.copyWith(poids: -1);
       final result = await addColis(AddColisParams(colis: invalid));
       expect(result.isLeft(), true);
       result.fold(
         (failure) => expect(failure, isA<ValidationFailure>()),
-        (_) => fail('Devrait échouer - poids nul'),
+        (_) => fail('Devrait échouer - poids négatif'),
       );
+    });
+
+    test('accepte poids = 0', () async {
+      final zero = validColis.copyWith(poids: 0);
+      final result = await addColis(AddColisParams(colis: zero));
+      expect(result.isRight(), true);
     });
 
     test('valide le prix >= 0', () async {
@@ -224,14 +230,20 @@ Le poids de ce colis est: 1.5KG
       );
     });
 
-    test('valide le poids > 0', () async {
-      final invalid = validColis.copyWith(poids: 0);
+    test('valide le poids >= 0', () async {
+      final invalid = validColis.copyWith(poids: -1);
       final result = await updateColis(UpdateColisParams(colis: invalid));
       expect(result.isLeft(), true);
       result.fold(
         (failure) => expect(failure, isA<ValidationFailure>()),
-        (_) => fail('Devrait échouer - poids nul'),
+        (_) => fail('Devrait échouer - poids négatif'),
       );
+    });
+
+    test('accepte poids = 0', () async {
+      final zero = validColis.copyWith(poids: 0);
+      final result = await updateColis(UpdateColisParams(colis: zero));
+      expect(result.isRight(), true);
     });
 
     test('valide le prix >= 0', () async {
@@ -260,8 +272,12 @@ Le poids de ce colis est: 1.5KG
       expect(validColis.copyWith(trackingNumber: '').isValid, false);
     });
 
-    test('isValid retourne false si poids <= 0', () {
-      expect(validColis.copyWith(poids: 0).isValid, false);
+    test('isValid retourne true si poids = 0', () {
+      expect(validColis.copyWith(poids: 0).isValid, true);
+    });
+
+    test('isValid retourne false si poids < 0', () {
+      expect(validColis.copyWith(poids: -1).isValid, false);
     });
 
     test('isValid retourne false si prix < 0', () {

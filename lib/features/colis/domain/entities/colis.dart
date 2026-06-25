@@ -29,7 +29,7 @@ class Colis extends Equatable {
     this.nombre,
   });
 
-  bool get isValid => poids > 0 && prixFret >= 0 && trackingNumber.isNotEmpty;
+  bool get isValid => poids >= 0 && prixFret >= 0 && trackingNumber.isNotEmpty;
 
   bool get isLivre => statut == ColisStatus.livre;
 

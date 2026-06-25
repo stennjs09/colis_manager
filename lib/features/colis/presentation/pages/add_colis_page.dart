@@ -157,9 +157,9 @@ class _AddColisPageState extends State<AddColisPage> {
                 children: [
                   Expanded(child: _buildField(_poidsController, _selectedUnite == 'M3' ? 'Volume' : 'Poids', '0.00',
                       _selectedUnite == 'M3' ? Icons.view_in_ar_rounded : Icons.scale_rounded, const TextInputType.numberWithOptions(decimal: true),
-                      suffix: _selectedUnite)),
+                      suffix: _selectedUnite, isRequired: false)),
                   const SizedBox(width: 12),
-                  Expanded(child: _buildField(_prixController, 'Fret', '0', Icons.payments_rounded, const TextInputType.numberWithOptions(decimal: true))),
+                  Expanded(child: _buildField(_prixController, 'Fret', '0', Icons.payments_rounded, const TextInputType.numberWithOptions(decimal: true), isRequired: false)),
                 ],
               ),
               const SizedBox(height: 16),
@@ -244,7 +244,7 @@ class _AddColisPageState extends State<AddColisPage> {
     );
   }
 
-  Widget _buildField(TextEditingController controller, String label, String hint, IconData icon, TextInputType keyboard, {String? suffix}) {
+  Widget _buildField(TextEditingController controller, String label, String hint, IconData icon, TextInputType keyboard, {String? suffix, bool isRequired = true}) {
     return TextFormField(
       controller: controller,
       decoration: InputDecoration(
@@ -261,7 +261,10 @@ class _AddColisPageState extends State<AddColisPage> {
       keyboardType: keyboard,
       textInputAction: TextInputAction.next,
       validator: (value) {
-        if (value == null || value.trim().isEmpty) return 'Requis';
+        if (value == null || value.trim().isEmpty) {
+          if (isRequired) return 'Requis';
+          return null;
+        }
         if (keyboard != TextInputType.number && keyboard != const TextInputType.numberWithOptions(decimal: true)) return null;
         if (double.tryParse(value.trim()) == null) return 'Invalide';
         return null;
@@ -462,12 +465,16 @@ class _AddColisPageState extends State<AddColisPage> {
 
     setState(() => _isSaving = true);
 
+    double _parseValue(String text) {
+      return double.tryParse(text.trim()) ?? 0.0;
+    }
+
     if (widget.isEditMode) {
       final updated = widget.existingColis!.copyWith(
         trackingNumber: _trackingController.text.trim(),
-        poids: double.parse(_poidsController.text.trim()),
+        poids: _parseValue(_poidsController.text),
         unite: UniteMesure.fromString(_selectedUnite),
-        prixFret: double.parse(_prixController.text.trim()),
+        prixFret: _parseValue(_prixController.text),
         statut: _selectedStatus,
         imagePath: _selectedImage?.path,
         dateArrivee: _dateArrivee,
@@ -479,9 +486,9 @@ class _AddColisPageState extends State<AddColisPage> {
         id: const Uuid().v4(),
         transportModeId: widget.transportMode.id,
         trackingNumber: _trackingController.text.trim(),
-        poids: double.parse(_poidsController.text.trim()),
+        poids: _parseValue(_poidsController.text),
         unite: UniteMesure.fromString(_selectedUnite),
-        prixFret: double.parse(_prixController.text.trim()),
+        prixFret: _parseValue(_prixController.text),
         statut: _selectedStatus,
         imagePath: _selectedImage?.path,
         dateAjout: DateTime.now(),

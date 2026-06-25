@@ -19,9 +19,9 @@ class AddColis implements UseCase<void, AddColisParams> {
         ValidationFailure(message: 'Le numéro de tracking est requis'),
       );
     }
-    if (colis.poids <= 0) {
+    if (colis.poids < 0) {
       return const Left(
-        ValidationFailure(message: 'Le poids doit être supérieur à 0'),
+        ValidationFailure(message: 'Le poids ne peut pas être négatif'),
       );
     }
     if (colis.prixFret < 0) {
